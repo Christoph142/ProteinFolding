@@ -16,6 +16,7 @@ public:
 	Population(const string& protein, const int size);
 	~Population();
 
+	void selectCandidatesForNextGeneration();
 	void evolve();
 	void showBestCandidate();
 };

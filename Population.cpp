@@ -22,34 +22,7 @@ Population::~Population()
 }
 
 void Population::evolve(){
-	float totalFitness = 0.0, minFitness = 0.0, maxFitness = 0.0;
-	vector<float> partsOfTotalFitness; // upper limits
-
-	for (int folding = 0; folding < size; folding++){
-		if (folding == 0 || candidates[folding].getFitness() < minFitness) minFitness = candidates[folding].getFitness();
-		if (candidates[folding].getFitness() > maxFitness) maxFitness = candidates[folding].getFitness();
-		totalFitness += candidates[folding].getFitness();
-		partsOfTotalFitness.push_back( totalFitness );
-	}
-	cout << setprecision(5) << "Durchschnittliche Fitness: " << totalFitness / size << ", min: " << minFitness << ", max: " << maxFitness << endl;
-	/*excel_avg << totalFitness / size << ";";
-	excel_min << minFitness << ";";
-	excel_max << maxFitness << ";";*/
-
-	// select candidates for next generation (fitness proportional):
-	for (int folding = 0; folding < size; folding++){
-		float randomValue = float(rand() % (int)(totalFitness*100)) / 100;
-		//cout << totalFitness << " - " << (totalFitness*1000) << " - " << randomValue << endl;
-		for (int i = 0; i < size; i++){ // check which candidate got chosen:
-			if (partsOfTotalFitness[i] >= randomValue){
-				nextGeneration[folding] = Folding(candidates[i]);
-				//cout << "candidate " << i << endl;
-				break;
-			}
-		}
-	}
-
-	for (int i = 0; i < size; i++) candidates[i] = nextGeneration[i];
+	selectCandidatesForNextGeneration();
 
 	// mutation:
 	int nr_of_mutations = mutationRate * size / 100;
@@ -58,8 +31,6 @@ void Population::evolve(){
 	// crossover:
 	int nr_of_crossovers = crossoverRate * size / 100;
 	for (int c = 0; c < nr_of_crossovers; c++) candidates[ rand() % size ].crossWith(candidates[rand() % size]);
-
-	//cout << population[folding]->toString() << ", Anteil an Gesamtfitness: " << 100*population[folding]->getFitness()/totalFitness << endl;
 }
 
 void Population::showBestCandidate(){
@@ -72,4 +43,66 @@ void Population::showBestCandidate(){
 		}
 	}
 	cout << "Bester Kandidat: " << endl << candidates[pos].toString() << endl;
+}
+
+void Population::selectCandidatesForNextGeneration(){
+	float totalFitness = 0.0, minFitness = 0.0, maxFitness = 0.0;
+	vector<float> partsOfTotalFitness; // upper limits
+
+	for (int folding = 0; folding < size; folding++){
+		if (folding == 0 || candidates[folding].getFitness() < minFitness) minFitness = candidates[folding].getFitness();
+		if (candidates[folding].getFitness() > maxFitness) maxFitness = candidates[folding].getFitness();
+		totalFitness += candidates[folding].getFitness();
+		partsOfTotalFitness.push_back(totalFitness);
+	}
+	cout << setprecision(5) << "Durchschnittliche Fitness: " << totalFitness / size << ", min: " << minFitness << ", max: " << maxFitness << endl;
+	/*excel_avg << totalFitness / size << ";";
+	excel_min << minFitness << ";";
+	excel_max << maxFitness << ";";*/
+
+	string strategy = "fitnessproportional";
+	if (strategy == "fitnessproportional") // fitness proportional:
+	{
+		for (int folding = 0; folding < size; folding++){
+			float randomValue = float(rand() % (int)(totalFitness * 100)) / 100;
+			//cout << totalFitness << " - " << (totalFitness*1000) << " - " << randomValue << endl;
+			for (int i = 0; i < size; i++){ // check which candidate got chosen:
+				if (partsOfTotalFitness[i] >= randomValue){
+					nextGeneration[folding] = Folding(candidates[i]);
+					//cout << "candidate " << i << endl;
+					break;
+				}
+			}
+		}
+	}
+	else // tournier:
+	{
+		const int nr_of_opponents = 5;
+
+		for (int folding = 0; folding < size; folding++){
+			int opponents[ nr_of_opponents ];
+
+			for (int o = 0; o < nr_of_opponents; o++){
+				float randomValue = float(rand() % (int)(totalFitness * 100)) / 100;
+
+				for (int i = 0; i < size; i++) // choose candidates for tournier:
+				{
+					if (partsOfTotalFitness[i] >= randomValue){
+						opponents[o] = i;
+						break;
+					}
+				}
+			}
+
+			int winner = 0, fitnessOfWinner = 0;
+			for (int o = 0; o < nr_of_opponents; o++) // determine winner:
+			{
+				if ( candidates[o].getFitness() >= fitnessOfWinner ) winner = o;
+			}
+
+			nextGeneration[folding] = Folding( candidates[winner] );
+		}
+	}
+
+	for (int i = 0; i < size; i++) candidates[i] = nextGeneration[i];
 }
