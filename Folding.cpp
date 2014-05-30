@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -70,7 +71,13 @@ void Folding::checkFitness(){
 	//cout << "Fitness: " << fitness << endl;
 }
 
-string Folding::toString(){
+void Folding::toString() {
+    
+}
+
+/*string Folding::toString(){
+    
+    
 	ostringstream o;
 
 	o << "directions: ";
@@ -114,7 +121,8 @@ string Folding::toString(){
 	}
 
 	return o.str();
-}
+    
+}*/
 
 void Folding::mutate(){
 	directions.at( rand() % directions.size() ) = rand() % 3;
