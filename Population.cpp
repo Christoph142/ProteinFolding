@@ -78,7 +78,8 @@ void Population::selectCandidatesForNextGeneration( const string& strategy ){
 	}
 	else // tournier:
 	{
-		const int nr_of_opponents = 5;
+		const int nr_of_opponents = 3;
+		int champ = 0, fitnessOfChamp = 0;
 
 		for (int folding = 0; folding < size; folding++)
 		{
@@ -93,7 +94,14 @@ void Population::selectCandidatesForNextGeneration( const string& strategy ){
 			}
 
 			nextGeneration[folding] = Folding( candidates[winner] );
+
+			if (fitnessOfWinner >= fitnessOfChamp){
+				champ = winner;
+				fitnessOfChamp = fitnessOfWinner;
+			}
 		}
+
+		cout << "Champ: " << fitnessOfChamp << endl;
 	}
 
 	for (int i = 0; i < size; i++) candidates[i] = nextGeneration[i];
