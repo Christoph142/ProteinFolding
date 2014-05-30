@@ -120,15 +120,31 @@ void Folding::mutate(){
 }
 
 void Folding::crossWith(Folding& partner){
-	int crossoverPoint = rand() % directions.size();
-	//cout << "Crossing " << this->toString() << " with " << partner.toString() << " at " << crossoverPoint << endl;
-	for (int p = 0; p < crossoverPoint; p++)
-	{
-		int helper = directions.at(p);
-		directions.at(p) = partner.directions.at(p);
-		partner.directions.at(p) = helper;
+
+	string strategy = "onepoint";
+
+	if (strategy == "onepoint"){
+		int crossoverPoint = rand() % directions.size();
+		//cout << "Crossing " << this->toString() << " with " << partner.toString() << " at " << crossoverPoint << endl;
+		for (int p = 0; p < crossoverPoint; p++)
+		{
+			int helper = directions.at(p);
+			directions.at(p) = partner.directions.at(p);
+			partner.directions.at(p) = helper;
+		}
+		fitness = -1.0; // fitness has to be recalculated on next usage
 	}
-	fitness = -1.0; // fitness has to be recalculated on next usage
+	else{ // uniform:
+		float bias = 0.5;// rand() % 100 / 100;
+
+		for (int p = 0; p < directions.size(); p++){
+			if (rand() % 100 > bias * 100) continue;
+
+			int helper = directions.at(p);
+			directions.at(p) = partner.directions.at(p);
+			partner.directions.at(p) = helper;
+		}
+	}
 }
 
 void Folding::operator=(const Folding& f){
