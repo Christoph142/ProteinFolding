@@ -21,9 +21,9 @@ Population::~Population()
 {
 }
 
-void Population::evolve(){
+void Population::evolve(const float pressure){
 	//selection:
-	selectCandidatesForNextGeneration( "tournier" );
+	selectCandidatesForNextGeneration( "tournier", pressure );
 
 	// mutation:
 	int nr_of_mutations = mutationRate * size / 100;
@@ -46,7 +46,7 @@ void Population::showBestCandidate(){
 	cout << "Bester Kandidat: " << endl << candidates[pos].toString() << endl;
 }
 
-void Population::selectCandidatesForNextGeneration( const string& strategy ){
+void Population::selectCandidatesForNextGeneration( const string& strategy, const float pressure ){
 
 	if (strategy == "fitnessproportional") // fitness proportional:
 	{
@@ -78,7 +78,9 @@ void Population::selectCandidatesForNextGeneration( const string& strategy ){
 	}
 	else // tournier:
 	{
-		const int nr_of_opponents = 3;
+		
+		const int nr_of_opponents = (20 * pressure) + 1;
+		
 		int champ = 0, fitnessOfChamp = 0;
 
 		for (int folding = 0; folding < size; folding++)

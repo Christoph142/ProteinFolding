@@ -18,12 +18,14 @@ int main(){
 	const string SEQ48 = "001001100110000011111111110000001100110010011111";
 	const string SEQ50 = "11010101011110100010001000010001000101111010101011";
 
-	Population p(SEQ50, 5000);
+	Population p(SEQ48, 1000);
 
-	for (int generation = 1; generation <= 100; generation++)
+	int maxGenerations = 200;
+
+	for (int generation = 1; generation <= maxGenerations; generation++)
 	{
 		cout << generation << ". Generation" << endl;
-		p.evolve();
+		p.evolve( (float)generation / maxGenerations ); // linear increase
 	}
 
 	p.showBestCandidate();
