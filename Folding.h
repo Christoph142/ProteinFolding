@@ -24,6 +24,7 @@ public:
 	void mutate();
 	void crossWith(Folding& f);
 	string toString();
+        string toString2();
 
 	void operator=(const Folding& f);
 };
