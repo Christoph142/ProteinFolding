@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=GA_Seiler_Durschang
+PROJECTNAME=ProteinFolding
 
 # Active Configuration
 DEFAULTCONF=Debug

@@ -45,7 +45,7 @@ void Population::showBestCandidate(){
 			pos = c;
 		}
 	}
-	cout << "Bester Kandidat: " << endl << candidates[pos].toString() << endl;
+	/*cout << "Bester Kandidat: " << endl << */candidates[pos].toString(); // << endl;
 }
 
 void Population::selectCandidatesForNextGeneration( const string& strategy, const float pressure ){

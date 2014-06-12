@@ -76,126 +76,15 @@ void Folding::checkFitness() {
     //cout << "Fitness: " << fitness << endl;
 }
 
-/*string Folding::toString() {
-    // cout << "\033[44;1;37mWeiß auf blauem Hintergrund\033[m" << endl;      // hydrophil
-    // cout << "\033[41;1;37mWeiß auf rotem Hintergrund\033[m" << endl;      // hydrophop
-
-    cout << "\033[49;1;31mBester Kandidat: \033[m" << endl;
-
-    cout << "directions: ";
-    for (int i = 0; i < directions.size(); i++) {
-        cout << directions[i];
-    }
-    cout << endl;
-
-    cout << "Fitness vom besten Kandidaten: " << setprecision(5) << getFitness() << endl;
-
-    // visualize:
-    const int size = 50; // protein.size() + 1;
-    char positions[size][size];
-    int x, y;
-    x = y = size / 2;
-
-    for (int i = 0; i < 50; i++) {
-        for (int j = 0; j < 50; j++) {
-            positions[j][i] = ':';
-        }
-    }
-
-
-    positions[x][y] = protein.at(0);
-    int direction = 0; // up
-    y--;
-    positions[x][y] = protein.at(1);
-
-    cout << "evaluated directions: u";
-    for (int i = 0; i < directions.size(); i++) {
-
-        // get direction:
-        if (directions.at(i) == 0) {
-            /* int z = -1;
-             z = z%4;
-             direction = direction-1;
-             direction= direction%4; // left turn
-
-            switch (direction) {
-                case 0:
-                    direction = 3;
-                    break;
-                case 1:
-                    direction = 0;
-                    break;
-                case 2:
-                    direction = 1;
-                    break;
-            }
-        } else if (directions.at(i) == 2) {
-            //  direction = ((direction + 1) % 4); // right turn
-            switch (direction) {
-                case 0:
-                    direction = 1;
-                    break;
-                case 1:
-                    direction = 2;
-                    break;
-                case 2:
-                    direction = 3;
-                    break;
-            }
-
-        }
-
-
-        // get position:
-        if (direction == 0) {
-            y--;
-            cout << "u";
-        }// up
-        else if (direction == 1) {
-            x++;
-            cout << "r";
-        }// right
-        else if (direction == 2) {
-            y++;
-            cout << "d";
-        }// down
-        else if (direction == 3) {
-            x--;
-            cout << "l";
-        } // left
-
-        if (positions[x][y] == '0' || positions[x][y] == '1') {
-            positions[x][y] = 'X';
-        }// overlapping
-        else {
-            positions[x][y] = protein.at(i + 2);
-        }
-    }
-
-    for (int i = 0; i < 50; i++) {
-        for (int j = 0; j < 50; j++) {
-            cout << positions[j][i];
-        }
-    }
-
-
-
-    return "Hurra, der genetische Algorithmus funktioniert :)";
-}
- */
-
 string Folding::toString() {
 
-
-   // ostringstream o;
-
-    cout << "directions: ";
+    cout << "\ndirections: ";
     for (int i = 0; i < directions.size(); i++) cout << directions[i];
-    cout << ", fitness: " << setprecision(5) << getFitness();
 
     // visualize:
     const int size = 50; // protein.size() + 1;
     char positions[size][size];
+    string output[size][size];
     int hydrophob[size][size];
     int x, y;
     x = y = size / 2;
@@ -203,6 +92,7 @@ string Folding::toString() {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             positions[j][i] = ':';
+            output[j][i] = ':';
             hydrophob[j][i] = 0;
         }
     }
@@ -218,7 +108,7 @@ string Folding::toString() {
 
         // get direction:
         if (directions.at(i) == 0) {
-            if (direction = 0) {
+            if (direction == 0) {
                 direction = 3;
             } else {
                 direction = (direction - 1) % 4; // left turn
@@ -247,56 +137,44 @@ string Folding::toString() {
         if (positions[x][y] == '1' || positions[x][y] == '0') positions[x][y] = 'X'; // overlapping
         else {
             positions[x][y] = protein.at(i + 2);
-            if (protein.at(i + 2) == '1') { // hydrophob -> check for neighbours:
-                if (positions[x][y + 1] == '1' && direction != 0) {
-                    hydrophob[x][y] = incrementer;
-                    hydrophob[x][y + 1] = incrementer;
-                    incrementer++;
-                }
-                if (positions[x - 1][y] == '1' && direction != 1) {
-                    hydrophob[x][y] = incrementer;
-                    hydrophob[x - 1][y] = incrementer;
-                    incrementer++;
-                }
-                if (positions[x][y - 1] == '1' && direction != 2) {
-                    hydrophob[x][y] = incrementer;
-                    hydrophob[x][y - 1] = incrementer;
-                    incrementer++;
-                }
-                if (positions[x + 1][y] == '1' && direction != 3) {
-                    hydrophob[x][y] = incrementer;
-                    hydrophob[x + 1][y] = incrementer;
-                    incrementer++;
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (positions[j][i] == '1') {
+                if (positions[j + 1][i] == '1' || positions[j - 1][i] == '1' || positions[j][i + 1] == '1' || positions[j][i - 1] == '1') {
+                    hydrophob[j][i] = 1;
                 }
             }
         }
     }
 
     cout << endl;
-    
+    cout << "\033[49;1;31mBester Kandidat: \033[m" << setprecision(5) << getFitness() << "\n";
+
     // cout << "\033[44;1;37mWeiß auf blauem Hintergrund\033[m" << endl;      // hydrophil
     // cout << "\033[41;1;37mWeiß auf rotem Hintergrund\033[m" << endl;      // hydrophop
-    
-    
-    for (int i = 0; i < 50; i++) {
-        for (int j = 0; j < 50; j++) {
-            if (hydrophob[j][i] != 0) {
-                int actual = hydrophob[j][i];
-                if(hydrophob[j+1][i] = actual) {
-                    cout << "\033[44;1;37m" << positions[j][i];
-                    cout << "\033[44;1;37m" << positions[j+1][i] << "\033[m";
-                    j++;
-                }
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (hydrophob[j][i] > 0) {
+                cout << "\033[44;1;37m" << positions[j][i] << "\033[m";
             } else {
-                if(positions[j][i] != ':') 
-                cout << "\033[41;1;37m" << positions[j][i] << "\033[m";
-                else cout << positions[j][i];
+                if (positions[j][i] != ':') {
+                    if (positions[j][i] == 'X') {
+                        cout << "\033[41;1;37m" << positions[j][i] << "\033[m";
+                    } else {
+                        cout << "\033[42;1;37m" << positions[j][i] << "\033[m";
+                    }
+                } else cout << positions[j][i];
             }
         }
+
         cout << endl;
     }
 
-    return "";
+    return "Hurra, der genetische Algorithmus funktioniert :)";
 
 }
 
