@@ -1,7 +1,6 @@
 #include "Folding.h"
 #include "output.h"
 
-
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -9,7 +8,11 @@
 
 using namespace std;
 
-// Test Tobi
+#define white_on_blue "\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
+#define white_on_green "\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
+#define white_on_red "\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
+#define reset "\033[m"                      // Setzt alle Farben zurück
+
 
 Folding::Folding() {
 }
@@ -151,21 +154,18 @@ string Folding::toString() {
     }
 
     cout << endl;
-    cout << "\033[49;1;31mBester Kandidat: \033[m" << setprecision(5) << getFitness() << "\n";
-
-    // cout << "\033[44;1;37mWeiß auf blauem Hintergrund\033[m" << endl;      // hydrophil
-    // cout << "\033[41;1;37mWeiß auf rotem Hintergrund\033[m" << endl;      // hydrophop
+    cout << white_on_red << "Bester Kandidat: " << reset << setprecision(5) << getFitness() << "\n";
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             if (hydrophob[j][i] > 0) {
-                cout << "\033[44;1;37m" << positions[j][i] << "\033[m";
+                cout << white_on_blue << positions[j][i] << reset;
             } else {
                 if (positions[j][i] != ':') {
                     if (positions[j][i] == 'X') {
-                        cout << "\033[41;1;37m" << positions[j][i] << "\033[m";
+                        cout << white_on_red << positions[j][i] << reset;
                     } else {
-                        cout << "\033[42;1;37m" << positions[j][i] << "\033[m";
+                        cout << white_on_green << positions[j][i] << reset;
                     }
                 } else cout << positions[j][i];
             }
