@@ -1,5 +1,4 @@
 #include "Folding.h"
-#include "output.h"
 
 #include <iostream>
 #include <iomanip>
@@ -12,7 +11,6 @@ using namespace std;
 #define white_on_green "\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
 #define white_on_red "\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
 #define reset "\033[m"                      // Setzt alle Farben zurück
-
 
 Folding::Folding() {
 }
@@ -87,15 +85,13 @@ string Folding::toString() {
     // visualize:
     const int size = 50; // protein.size() + 1;
     char positions[size][size];
-    string output[size][size];
     int hydrophob[size][size];
     int x, y;
     x = y = size / 2;
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            positions[j][i] = ':';
-            output[j][i] = ':';
+            positions[j][i] = ' ';
             hydrophob[j][i] = 0;
         }
     }
@@ -103,7 +99,8 @@ string Folding::toString() {
     positions[x][y] = (protein.at(0));
     int direction = 0; // up
     int incrementer = 1;
-    y--;
+    y = y-2;
+    positions[x][y+1] = '-';
     positions[x][y] = (protein.at(1));
 
     cout << ", evaluated directions: u";
@@ -121,22 +118,27 @@ string Folding::toString() {
 
         // get position:
         if (direction == 0) {
-            y--;
+            y = y-2;
+            positions[x][y+1] = '-';
             cout << "u";
         }// up
         else if (direction == 1) {
-            x++;
+            x = x+2;
+            positions[x-1][y] = '-';
             cout << "r";
         }// right
         else if (direction == 2) {
-            y++;
+            y = y+2;
+            positions[x][y-1] = '-';
             cout << "d";
         }// down
         else if (direction == 3) {
-            x--;
+            x = x-2;
+            positions[x+1][y] = '-';
             cout << "l";
         } // left
-
+        
+        
         if (positions[x][y] == '1' || positions[x][y] == '0') positions[x][y] = 'X'; // overlapping
         else {
             positions[x][y] = protein.at(i + 2);
@@ -146,7 +148,7 @@ string Folding::toString() {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             if (positions[j][i] == '1') {
-                if (positions[j + 1][i] == '1' || positions[j - 1][i] == '1' || positions[j][i + 1] == '1' || positions[j][i - 1] == '1') {
+                if (positions[j + 2][i] == '1' || positions[j - 2][i] == '1' || positions[j][i + 2] == '1' || positions[j][i - 2] == '1') {
                     hydrophob[j][i] = 1;
                 }
             }
@@ -161,7 +163,7 @@ string Folding::toString() {
             if (hydrophob[j][i] > 0) {
                 cout << white_on_blue << positions[j][i] << reset;
             } else {
-                if (positions[j][i] != ':') {
+                if (positions[j][i] != ' ') {
                     if (positions[j][i] == 'X') {
                         cout << white_on_red << positions[j][i] << reset;
                     } else {
