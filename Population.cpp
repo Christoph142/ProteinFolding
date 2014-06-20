@@ -4,6 +4,10 @@
 
 #include <stdlib.h>
 
+#define white_on_red "\033[41;1;37m"  
+
+#define reset "\033[m" 
+
 using namespace std;
 
 Population::Population()
@@ -27,7 +31,7 @@ Population::~Population()
 
 void Population::evolve(const float pressure){
 	//selection:
-	selectCandidatesForNextGeneration( "tournier", pressure );
+	selectCandidatesForNextGeneration( "fitnessproportional", pressure );
 
 	// mutation:
 	int nr_of_mutations = mutationRate * size / 100;
@@ -47,13 +51,13 @@ void Population::showBestCandidate(){
 			pos = c;
 		}
 	}
-	///*cout << "Bester Kandidat: " << endl << */candidates[pos].toString(); // << endl;
+	cout << /*white_on_red << "Bester Kandidat: " << endl << */candidates[pos].toString();
 	bestCandidate.toString();
 }
 
 void Population::selectCandidatesForNextGeneration( const string& strategy, const float pressure ){
 
-	if (strategy == "fitnessproportional") // fitness proportional:
+	if (strategy == "tournier") // fitness proportional:
 	{
 		float totalFitness = 0.0, minFitness = 0.0, maxFitness = 0.0;
 		vector<float> partsOfTotalFitness; // upper limits

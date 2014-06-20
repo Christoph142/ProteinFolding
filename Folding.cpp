@@ -35,6 +35,12 @@ const float Folding::getFitness() {
 void Folding::checkFitness() {
     const int size = 100; // protein.size() + 1;
     int positions[size][size];
+    
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            positions[i][j] = -1;
+        }
+    }
 
     int x, y;
     x = y = size / 2;
@@ -49,8 +55,19 @@ void Folding::checkFitness() {
     for (int i = 0; i < directions.size(); i++) {
 
         // get direction:
-        if (directions.at(i) == 0) direction = (direction - 1) % 4; // left turn
-        else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
+     //  if (directions.at(i) == 0) direction = (direction - 1) % 4; // left turn
+     //   else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
+        
+        
+        // get direction:
+        if (directions.at(i) == 0) {
+            if (direction == 0) {
+                direction = 3;
+            } else {
+                direction = (direction - 1) % 4; // left turn
+            }
+        } else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
+        
 
         // get position:
         if (direction == 0) y--; // up
