@@ -7,10 +7,10 @@
 
 using namespace std;
 
-#define white_on_blue "\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
-#define white_on_green "\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
-#define white_on_red "\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
-#define reset "\033[m"                      // Setzt alle Farben zurück
+#define white_on_blue ""//"\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
+#define white_on_green ""//"\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
+#define white_on_red ""//"\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
+#define reset ""//"\033[m"                      // Setzt alle Farben zurück
 
 Folding::Folding() {
 }
@@ -100,7 +100,7 @@ string Folding::toString() {
     int direction = 0; // up
     int incrementer = 1;
     y = y-2;
-    positions[x][y+1] = '-';
+    positions[x][y+1] = '|';
     positions[x][y] = (protein.at(1));
 
     cout << ", evaluated directions: u";
@@ -119,7 +119,7 @@ string Folding::toString() {
         // get position:
         if (direction == 0) {
             y = y-2;
-            positions[x][y+1] = '-';
+            positions[x][y+1] = '|';
             cout << "u";
         }// up
         else if (direction == 1) {
@@ -129,7 +129,7 @@ string Folding::toString() {
         }// right
         else if (direction == 2) {
             y = y+2;
-            positions[x][y-1] = '-';
+            positions[x][y-1] = '|';
             cout << "d";
         }// down
         else if (direction == 3) {
