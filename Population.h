@@ -20,5 +20,6 @@ public:
 	void evolve(const float pressure);
 	void selectCandidatesForNextGeneration(const string& strategy, const float pressure);
 	void showBestCandidate();
+	Folding& getBestCandidate();
 };
 

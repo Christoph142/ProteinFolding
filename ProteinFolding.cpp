@@ -10,7 +10,7 @@
 using namespace std;
 
 int main(){
-	srand(time(NULL));
+	ofstream onepoint("uniform 0.3.txt");
 
     const string SEQ10 = "1001011100";
 	const string SEQ20 = "10100110100101100101"; // max 9
@@ -20,18 +20,23 @@ int main(){
 	const string SEQ48 = "001001100110000011111111110000001100110010011111";
 	const string SEQ50 = "11010101011110100010001000010001000101111010101011";
 
-	Population p(SEQ36, 2000);
+	int maxGenerations = 100;
 
-	int maxGenerations = 150;
+	for (int testingSeed = 0; testingSeed < 10; testingSeed++){
+		srand(testingSeed);// time(NULL));
+		cout << "Seed " << testingSeed << "..." << endl;
+		Population p(SEQ20, 1000);
 
-	for (int generation = 1; generation <= maxGenerations; generation++)
-	{
-		cout << generation << ". Generation" << endl;
-		p.evolve( (float)generation / maxGenerations ); // linear increase
+		for (int generation = 1; generation <= maxGenerations; generation++)
+		{
+			//cout << generation << ". Generation" << endl;
+			p.evolve((float)generation / maxGenerations); // linear increase
+		}
+
+		onepoint << p.getBestCandidate().getFitness() << ";";
 	}
+	
+	onepoint.close();
 
-	p.showBestCandidate();
-
-	system("pause");
 	return 0;
 }

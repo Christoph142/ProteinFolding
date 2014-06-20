@@ -51,6 +51,10 @@ void Population::showBestCandidate(){
 	bestCandidate.toString();
 }
 
+Folding& Population::getBestCandidate(){
+	return bestCandidate;
+}
+
 void Population::selectCandidatesForNextGeneration( const string& strategy, const float pressure ){
 
 	if (strategy == "fitnessproportional") // fitness proportional:
@@ -110,7 +114,7 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 			if (fitnessOfChamp > bestCandidate.getFitness()) bestCandidate = candidates[champ];
 		}
 
-		cout << "Champ: " << fitnessOfChamp << endl;
+		//cout << "Champ: " << fitnessOfChamp << endl;
 	}
 
 	for (int i = 0; i < size; i++) candidates[i] = nextGeneration[i];

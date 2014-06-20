@@ -83,7 +83,7 @@ string Folding::toString() {
     for (int i = 0; i < directions.size(); i++) cout << directions[i];
 
     // visualize:
-    const int size = 50; // protein.size() + 1;
+    const int size = 100; // protein.size() + 1;
     char positions[size][size];
     int hydrophob[size][size];
     int x, y;
@@ -98,7 +98,6 @@ string Folding::toString() {
 
     positions[x][y] = (protein.at(0));
     int direction = 0; // up
-    int incrementer = 1;
     y = y-2;
     positions[x][y+1] = '|';
     positions[x][y] = (protein.at(1));
@@ -139,10 +138,8 @@ string Folding::toString() {
         } // left
         
         
-        if (positions[x][y] == '1' || positions[x][y] == '0') positions[x][y] = 'X'; // overlapping
-        else {
-            positions[x][y] = protein.at(i + 2);
-        }
+        if (positions[x][y] == '1' || positions[x][y] == '0')	positions[x][y] = 'X'; // overlapping
+        else													positions[x][y] = protein.at(i + 2);
     }
 
     for (int i = 0; i < size; i++) {
@@ -199,7 +196,7 @@ void Folding::crossWith(Folding& partner) {
         }
         fitness = -1.0; // fitness has to be recalculated on next usage
     } else { // uniform:
-        float bias = 0.5; // rand() % 100 / 100;
+        float bias = 0.3; // rand() % 100 / 100;
 
         for (int p = 0; p < directions.size(); p++) {
             if (rand() % 100 > bias * 100) continue;
