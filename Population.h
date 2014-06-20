@@ -8,6 +8,7 @@ private:
 	const int size = 100;
 	const int mutationRate = 2;	// in %
 	const int crossoverRate = 20; // in %
+	Folding bestCandidate;
 	vector<Folding> candidates;
 	vector<Folding> nextGeneration;
 

@@ -17,6 +17,8 @@ Population::Population(const string& p, const int s) : size(s), protein(p)
 		candidates.push_back(Folding(protein));
 		nextGeneration.push_back(Folding(protein));
 	}
+
+	bestCandidate = candidates[0]; // just init with random candidate
 }
 
 Population::~Population()
@@ -45,7 +47,8 @@ void Population::showBestCandidate(){
 			pos = c;
 		}
 	}
-	/*cout << "Bester Kandidat: " << endl << */candidates[pos].toString(); // << endl;
+	///*cout << "Bester Kandidat: " << endl << */candidates[pos].toString(); // << endl;
+	bestCandidate.toString();
 }
 
 void Population::selectCandidatesForNextGeneration( const string& strategy, const float pressure ){
@@ -103,6 +106,8 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 				champ = winner;
 				fitnessOfChamp = fitnessOfWinner;
 			}
+
+			if (fitnessOfChamp > bestCandidate.getFitness()) bestCandidate = candidates[champ];
 		}
 
 		cout << "Champ: " << fitnessOfChamp << endl;
