@@ -27,7 +27,7 @@ Population::~Population()
 
 void Population::evolve(const float pressure){
 	//selection:
-	selectCandidatesForNextGeneration( "tournier", pressure );
+	selectCandidatesForNextGeneration( "fitnessproportional", pressure );
 
 	// mutation:
 	int nr_of_mutations = mutationRate * size / 100;
@@ -61,17 +61,24 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 	{
 		float totalFitness = 0.0, minFitness = 0.0, maxFitness = 0.0;
 		vector<float> partsOfTotalFitness; // upper limits
+                
+                int bestPos = 0;
 
 		for (int folding = 0; folding < size; folding++){
 			if (folding == 0 || candidates[folding].getFitness() < minFitness) minFitness = candidates[folding].getFitness();
-			if (candidates[folding].getFitness() > maxFitness) maxFitness = candidates[folding].getFitness();
+			if (candidates[folding].getFitness() > maxFitness) {maxFitness = candidates[folding].getFitness();
+                        bestPos = folding;
+                        }
 			totalFitness += candidates[folding].getFitness();
 			partsOfTotalFitness.push_back(totalFitness);
 		}
+                bestCandidate = candidates[bestPos];
 		cout << setprecision(5) << "Durchschnittliche Fitness: " << totalFitness / size << ", min: " << minFitness << ", max: " << maxFitness << endl;
 		/*excel_avg << totalFitness / size << ";";
 		excel_min << minFitness << ";";
 		excel_max << maxFitness << ";";*/
+                
+                
 
 		for (int folding = 0; folding < size; folding++){
 			float randomValue = float(rand() % (int)(totalFitness * 100)) / 100;

@@ -7,10 +7,10 @@
 
 using namespace std;
 
-#define white_on_blue ""//"\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
-#define white_on_green ""//"\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
-#define white_on_red ""//"\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
-#define reset ""//"\033[m"                      // Setzt alle Farben zurück
+#define white_on_blue "\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
+#define white_on_green ""//\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
+#define white_on_red ""//\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
+#define reset "\033[m"                      // Setzt alle Farben zurück
 
 Folding::Folding() {
 }
@@ -213,8 +213,8 @@ void Folding::crossWith(Folding& partner) {
         }
         fitness = -1.0; // fitness has to be recalculated on next usage
     } else { // uniform:
-        float bias = 0.3; // rand() % 100 / 100;
-
+        float bias = 0;//(float) (rand() % 100) / 100;
+        
         for (int p = 0; p < directions.size(); p++) {
             if (rand() % 100 > bias * 100) continue;
 

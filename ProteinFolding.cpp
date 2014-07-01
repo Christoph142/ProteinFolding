@@ -9,34 +9,33 @@
 
 using namespace std;
 
-int main(){
-	ofstream onepoint("uniform 0.3.txt");
+int main() {
+    ofstream onepoint("none.txt");
 
     const string SEQ10 = "1001011100";
-	const string SEQ20 = "10100110100101100101"; // max 9
-	const string SEQ24 = "110010010010010010010011";
-	const string SEQ25 = "0010011000011000011000011";
-	const string SEQ36 = "000110011000001111111001100001100100";
-	const string SEQ48 = "001001100110000011111111110000001100110010011111";
-	const string SEQ50 = "11010101011110100010001000010001000101111010101011";
+    const string SEQ20 = "10100110100101100101"; // max 9
+    const string SEQ24 = "110010010010010010010011";
+    const string SEQ25 = "0010011000011000011000011";
+    const string SEQ36 = "000110011000001111111001100001100100";
+    const string SEQ48 = "001001100110000011111111110000001100110010011111";
+    const string SEQ50 = "11010101011110100010001000010001000101111010101011";
 
-	int maxGenerations = 100;
+    int maxGenerations = 200;
 
-	for (int testingSeed = 0; testingSeed < 10; testingSeed++){
-		srand(testingSeed);// time(NULL));
-		cout << "Seed " << testingSeed << "..." << endl;
-		Population p(SEQ20, 1000);
+    for (int testingSeed = 0; testingSeed < 1; testingSeed++) {
+        srand(time(NULL));
+        cout << "Seed " << testingSeed << "..." << endl;
+        Population p(SEQ50, 10000);
 
-		for (int generation = 1; generation <= maxGenerations; generation++)
-		{
-			//cout << generation << ". Generation" << endl;
-			p.evolve((float)generation / maxGenerations); // linear increase
-		}
+        for (int generation = 1; generation <= maxGenerations; generation++) {
+            cout << generation << ". Generation" << endl;
+            p.evolve((float) generation / maxGenerations); // linear increase
+        }
 
-		onepoint << p.getBestCandidate().getFitness() << ";";
-	}
-	
-	onepoint.close();
+        cout << p.getBestCandidate().toString() << ";";
+    }
 
-	return 0;
+    onepoint.close();
+
+    return 0;
 }
