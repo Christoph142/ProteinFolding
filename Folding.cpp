@@ -7,10 +7,10 @@
 
 using namespace std;
 
-#define white_on_blue "\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
-#define white_on_green ""//\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
+#define white_on_blue ""//"\033[44;1;37m"       // Weiße Schrift auf blauen Hintergrund --> Hydrophil
+#define white_on_green ""//""//\033[42;1;37m"      // Weiße Schrift auf grünem Hintergrund --> Hydrophob
 #define white_on_red ""//\033[41;1;37m"        // Weiße Schrift auf rotem Hintergrund --> Überlappung
-#define reset "\033[m"                      // Setzt alle Farben zurück
+#define reset ""//"\033[m"                      // Setzt alle Farben zurück
 
 Folding::Folding() {
 }
@@ -119,7 +119,7 @@ string Folding::toString() {
     positions[x][y+1] = '|';
     positions[x][y] = (protein.at(1));
 
-    cout << ", evaluated directions: u";
+    cout << endl << "evaluated directions: u";
     for (int i = 0; i < directions.size(); i++) {
 
         // get direction:
@@ -170,7 +170,7 @@ string Folding::toString() {
     }
 
     cout << endl;
-    cout << white_on_red << "Bester Kandidat: " << reset << setprecision(5) << getFitness() << "\n";
+    cout << white_on_red << "Bester Kandidat: " << reset << setprecision(5) << getFitness()-1 << " hydrophob-Kontakte" << endl;
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {

@@ -39,15 +39,6 @@ void Population::evolve(const float pressure){
 }
 
 void Population::showBestCandidate(){
-	float best = -1.0, pos = 0;
-	for (int c = 0; c < size; c++){
-		float f = candidates[c].getFitness();
-		if (f > best){
-			best = f;
-			pos = c;
-		}
-	}
-	///*cout << "Bester Kandidat: " << endl << */candidates[pos].toString(); // << endl;
 	bestCandidate.toString();
 }
 
@@ -62,17 +53,19 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 		float totalFitness = 0.0, minFitness = 0.0, maxFitness = 0.0;
 		vector<float> partsOfTotalFitness; // upper limits
                 
-                int bestPos = 0;
+        int bestPos = 0;
 
 		for (int folding = 0; folding < size; folding++){
 			if (folding == 0 || candidates[folding].getFitness() < minFitness) minFitness = candidates[folding].getFitness();
-			if (candidates[folding].getFitness() > maxFitness) {maxFitness = candidates[folding].getFitness();
-                        bestPos = folding;
-                        }
+			if (candidates[folding].getFitness() > maxFitness) {
+				maxFitness = candidates[folding].getFitness();
+				bestPos = folding;
+            }
 			totalFitness += candidates[folding].getFitness();
 			partsOfTotalFitness.push_back(totalFitness);
 		}
-                bestCandidate = candidates[bestPos];
+		if(candidates[bestPos].getFitness() > bestCandidate.getFitness()) bestCandidate = candidates[bestPos]; // remember best all-time candidate
+
 		cout << setprecision(5) << "Durchschnittliche Fitness: " << totalFitness / size << ", min: " << minFitness << ", max: " << maxFitness << endl;
 		/*excel_avg << totalFitness / size << ";";
 		excel_min << minFitness << ";";

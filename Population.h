@@ -4,10 +4,10 @@
 class Population
 {
 private:
-	const string protein = "10100110100101100101";
+	const string protein = "";
 	const int size = 100;
 	const int mutationRate = 2;	// in %
-	const int crossoverRate = 20; // in %
+	const int crossoverRate = 30; // in %
 	Folding bestCandidate;
 	vector<Folding> candidates;
 	vector<Folding> nextGeneration;
