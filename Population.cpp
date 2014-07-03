@@ -90,11 +90,14 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 		
 		const int nr_of_opponents = (20 * pressure) + 1;
 		
-		int champ = 0, fitnessOfChamp = 0;
+		int champ = 0;
+		float fitnessOfChamp = 0.0;
 
 		for (int folding = 0; folding < size; folding++)
 		{
-			int winner = 0, fitnessOfWinner = 0;
+			int winner = 0;
+			float fitnessOfWinner = 0;
+
 			for (int o = 0; o < nr_of_opponents; o++) // determine winner:
 			{
 				int randomOpponent = rand() % size;
