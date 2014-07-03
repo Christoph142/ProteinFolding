@@ -33,7 +33,7 @@ const float Folding::getFitness() {
 }
 
 void Folding::checkFitness() {
-    const int size = 100; // protein.size() + 1;
+    const int size = 50; // protein.size() + 1;
     int positions[size][size];
     
     for(int i = 0; i < size; i++) {
@@ -55,30 +55,23 @@ void Folding::checkFitness() {
     for (int i = 0; i < directions.size(); i++) {
 
         // get direction:
-     //  if (directions.at(i) == 0) direction = (direction - 1) % 4; // left turn
-     //   else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
+        if (directions.at(i) == 0) { // left turn
+            if (direction == 0) direction = 3;
+            else				direction = (direction - 1) % 4;
+        }
+		else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
         
-        
-        // get direction:
-        if (directions.at(i) == 0) {
-            if (direction == 0) {
-                direction = 3;
-            } else {
-                direction = (direction - 1) % 4; // left turn
-            }
-        } else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
-        
-
         // get position:
-        if (direction == 0) y--; // up
+        if		(direction == 0) y--; // up
         else if (direction == 1) x++; // right
         else if (direction == 2) y++; // down
         else if (direction == 3) x--; // left
 
-        if (positions[x][y] >= 0) {
+        if (positions[x][y] >= 0) { // overlapping
             overlaps++;
             continue;
-        } // overlapping
+        }
+
         positions[x][y] = (protein.at(i + 2) == '0' ? 0 : 1);
 
         if (protein.at(i + 2) == '1') { // hydrophob -> check for neighbours:
@@ -91,7 +84,6 @@ void Folding::checkFitness() {
     }
 
     fitness = float(hydrophobicContacts) / float(overlaps);
-    //cout << "Fitness: " << fitness << endl;
 }
 
 string Folding::toString() {
@@ -190,7 +182,7 @@ string Folding::toString() {
         cout << endl;
     }
 
-    return "Hurra, der genetische Algorithmus funktioniert :)";
+    return "";
 
 }
 
