@@ -45,7 +45,7 @@ void Folding::checkFitness() {
     int x, y;
     x = y = size / 2;
 
-    int hydrophobicContacts = 1, overlaps = 1;
+    int hydrophobicContacts = 0, overlaps = 1;
 
     positions[x][y] = (protein.at(0) == '0' ? 0 : 1);
     int direction = 0; // up
@@ -92,7 +92,7 @@ string Folding::toString() {
     for (unsigned int i = 0; i < directions.size(); i++) cout << directions[i];
 
     // visualize:
-    const int size = 100; // protein.size() + 1;
+    const int size = 50; // protein.size() + 1;
     char positions[size][size];
     int hydrophob[size][size];
     int x, y;
@@ -162,7 +162,7 @@ string Folding::toString() {
     }
 
     cout << endl;
-    cout << white_on_red << "Bester Kandidat: " << reset << setprecision(5) << getFitness()-1 << " hydrophob-Kontakte" << endl;
+    cout << white_on_red << "Bester Kandidat: " << reset << setprecision(5) << getFitness() << " hydrophob-Kontakte" << endl;
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -205,7 +205,7 @@ void Folding::crossWith(Folding& partner) {
         }
         fitness = -1.0; // fitness has to be recalculated on next usage
     } else { // uniform:
-        float bias = 0;//(float) (rand() % 100) / 100;
+        float bias = 0.05;//(float) (rand() % 100) / 100;
         
         for (unsigned int p = 0; p < directions.size(); p++) {
             if (rand() % 100 > bias * 100) continue;

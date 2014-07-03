@@ -1,6 +1,7 @@
 #include "Population.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 
 #include <stdlib.h>
 
@@ -65,7 +66,8 @@ void Population::selectCandidatesForNextGeneration( const string& strategy, cons
 			partsOfTotalFitness.push_back(totalFitness);
 		}
 		if(candidates[bestPos].getFitness() > bestCandidate.getFitness()) bestCandidate = candidates[bestPos]; // remember best all-time candidate
-
+		ofstream file("test.txt", ios::app);
+		file << totalFitness << ";";
 		cout << setprecision(5) << "Durchschnittliche Fitness: " << totalFitness / size << ", min: " << minFitness << ", max: " << maxFitness << endl;
 		/*excel_avg << totalFitness / size << ";";
 		excel_min << minFitness << ";";
