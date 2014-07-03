@@ -18,7 +18,7 @@ Folding::Folding() {
 Folding::Folding(const string& prot) : protein(prot) {
     // 1st element = no direction
     directions.push_back(rand() % 2); // 2nd element right / left = mirrored
-    for (int i = 2; i < protein.length() - 1; i++) directions.push_back(rand() % 3); // all other elements: left, straight, right
+    for (unsigned int i = 2; i < protein.length() - 1; i++) directions.push_back(rand() % 3); // all other elements: left, straight, right
 }
 
 Folding::~Folding() {
@@ -52,7 +52,7 @@ void Folding::checkFitness() {
     y--;
     positions[x][y] = (protein.at(1) == '0' ? 0 : 1);
 
-    for (int i = 0; i < directions.size(); i++) {
+    for (unsigned int i = 0; i < directions.size(); i++) {
 
         // get direction:
         if (directions.at(i) == 0) { // left turn
@@ -89,7 +89,7 @@ void Folding::checkFitness() {
 string Folding::toString() {
 
     cout << "\ndirections: ";
-    for (int i = 0; i < directions.size(); i++) cout << directions[i];
+    for (unsigned int i = 0; i < directions.size(); i++) cout << directions[i];
 
     // visualize:
     const int size = 100; // protein.size() + 1;
@@ -112,7 +112,7 @@ string Folding::toString() {
     positions[x][y] = (protein.at(1));
 
     cout << endl << "evaluated directions: u";
-    for (int i = 0; i < directions.size(); i++) {
+    for (unsigned int i = 0; i < directions.size(); i++) {
 
         // get direction:
         if (directions.at(i) == 0) {
@@ -207,7 +207,7 @@ void Folding::crossWith(Folding& partner) {
     } else { // uniform:
         float bias = 0;//(float) (rand() % 100) / 100;
         
-        for (int p = 0; p < directions.size(); p++) {
+        for (unsigned int p = 0; p < directions.size(); p++) {
             if (rand() % 100 > bias * 100) continue;
 
             int helper = directions.at(p);
