@@ -115,14 +115,11 @@ string Folding::toString() {
     for (unsigned int i = 0; i < directions.size(); i++) {
 
         // get direction:
-        if (directions.at(i) == 0) {
-            if (direction == 0) {
-                direction = 3;
-            } else {
-                direction = (direction - 1) % 4; // left turn
-            }
-        } else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
-
+        if (directions.at(i) == 0) { // left turn
+            if (direction == 0) direction = 3;
+            else				direction = (direction - 1) % 4;
+        }
+		else if (directions.at(i) == 2) direction = (direction + 1) % 4; // right turn
 
         // get position:
         if (direction == 0) {
@@ -166,19 +163,11 @@ string Folding::toString() {
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (hydrophob[j][i] > 0) {
-                cout << white_on_blue << positions[j][i] << reset;
-            } else {
-                if (positions[j][i] != ' ') {
-                    if (positions[j][i] == 'X') {
-                        cout << white_on_red << positions[j][i] << reset;
-                    } else {
-                        cout << white_on_green << positions[j][i] << reset;
-                    }
-                } else cout << positions[j][i];
-            }
+            if		(hydrophob[j][i] > 0)	 cout << white_on_blue << positions[j][i] << reset;
+			else if (positions[j][i] == 'X') cout << white_on_red << positions[j][i] << reset;
+            else if (positions[j][i] != ' ') cout << white_on_green << positions[j][i] << reset;
+            else							 cout << positions[j][i];
         }
-
         cout << endl;
     }
 
@@ -205,7 +194,7 @@ void Folding::crossWith(Folding& partner) {
         }
         fitness = -1.0; // fitness has to be recalculated on next usage
     } else { // uniform:
-        float bias = 0.05;//(float) (rand() % 100) / 100;
+        float bias = 0.2;//(float) (rand() % 100) / 100;
         
         for (unsigned int p = 0; p < directions.size(); p++) {
             if (rand() % 100 > bias * 100) continue;

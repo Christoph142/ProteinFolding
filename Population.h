@@ -5,7 +5,7 @@ class Population
 {
 private:
 	const string protein = "";
-	const int size = 100;
+	const int size = 1000;
 	const int mutationRate = 2;	// in %
 	const int crossoverRate = 30; // in %
 	Folding bestCandidate;
